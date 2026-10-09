@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import AuthShell from '@/components/AuthShell.vue'
 import NoticeBox from '@/components/NoticeBox.vue'
-import { siteUrl, supabase } from '@/lib/supabase'
+import { authRedirectUrl, supabase } from '@/lib/supabase'
 import { friendlyError } from '@/lib/errors'
 import { usePageMeta } from '@/composables/usePageMeta'
 
@@ -36,7 +36,7 @@ async function submit() {
   const { error: err } = await supabase.auth.signUp({
     email: email.value.trim(),
     password: password.value,
-    options: { emailRedirectTo: `${siteUrl()}/account` },
+    options: { emailRedirectTo: authRedirectUrl('/account') },
   })
   busy.value = false
   if (err) return (error.value = friendlyError(err))

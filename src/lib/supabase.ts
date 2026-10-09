@@ -33,6 +33,17 @@ export function siteUrl(): string {
   return typeof window !== 'undefined' ? window.location.origin : ''
 }
 
+/**
+ * Where auth emails (confirmation, password reset) should send the user back to:
+ * the site they are actually using, so localhost and production each return to
+ * themselves. The URL must be listed under Supabase → Authentication → URL
+ * Configuration → Redirect URLs, otherwise Supabase falls back to its Site URL.
+ */
+export function authRedirectUrl(path: string): string {
+  const origin = typeof window !== 'undefined' ? window.location.origin : siteUrl()
+  return `${origin}${path}`
+}
+
 export function verificationUrl(token: string): string {
   return `${siteUrl()}/verify/${token}`
 }

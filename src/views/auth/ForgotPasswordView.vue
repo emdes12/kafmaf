@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import AuthShell from '@/components/AuthShell.vue'
 import NoticeBox from '@/components/NoticeBox.vue'
-import { siteUrl, supabase } from '@/lib/supabase'
+import { authRedirectUrl, supabase } from '@/lib/supabase'
 import { friendlyError } from '@/lib/errors'
 import { usePageMeta } from '@/composables/usePageMeta'
 
@@ -16,7 +16,7 @@ async function submit() {
   if (!supabase || !email.value.trim()) return
   busy.value = true
   error.value = null
-  const { error: err } = await supabase.auth.resetPasswordForEmail(email.value.trim(), { redirectTo: `${siteUrl()}/reset-password` })
+  const { error: err } = await supabase.auth.resetPasswordForEmail(email.value.trim(), { redirectTo: authRedirectUrl('/reset-password') })
   busy.value = false
   // Do not reveal whether an account exists; only surface rate-limit / network problems.
   if (err && (err.status === 429 || /fetch/i.test(err.message))) return (error.value = friendlyError(err))
