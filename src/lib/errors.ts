@@ -11,8 +11,11 @@ export function friendlyError(error: unknown, fallback = 'Something went wrong. 
   if (typeof error === 'object') {
     const e = error as { code?: string; message?: string; name?: string; status?: number }
     if (e.code && USER_FACING_CODES.has(e.code) && e.message) return e.message
-    if (e.name === 'AuthApiError' || e.name === 'AuthWeakPasswordError') return e.message ?? fallback
+    if (e.code === 'over_email_send_rate_limit' || /email rate limit/i.test(e.message ?? '')) {
+      return 'We cannot send more emails right now. Please try again in an hour. If you already signed up, check your inbox (and spam folder) for the confirmation link.'
+    }
     if (e.status === 429) return 'Too many attempts. Please wait a moment and try again.'
+    if (e.name === 'AuthApiError' || e.name === 'AuthWeakPasswordError') return e.message ?? fallback
     if (e.message && /Failed to fetch|NetworkError/i.test(e.message)) {
       return 'Could not reach the membership service. Check your connection and try again.'
     }
