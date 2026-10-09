@@ -393,7 +393,9 @@ alter table public.member_requests enable row level security;
 alter table public.audit_logs enable row level security;
 alter table public.islamic_occasions enable row level security;
 
--- Remove default privileges and grant only what each role needs.
+-- Remove default privileges and grant only what each role needs. Grants below are explicit,
+-- so the schema works whether or not "Automatically expose new tables" is enabled in Supabase.
+grant usage on schema public to anon, authenticated;
 revoke all on all tables in schema public from anon, authenticated;
 revoke all on all sequences in schema public from anon, authenticated;
 revoke execute on all functions in schema public from public, anon, authenticated;
