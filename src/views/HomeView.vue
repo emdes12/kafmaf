@@ -105,9 +105,9 @@ const faq = computed(() => [
               <span v-if="i" class="mx-2 text-gold" aria-hidden="true">/</span>{{ d.name }}
             </template>
           </p>
-          <!-- <p v-reveal="200" class="mt-7 max-w-xl text-lg leading-8 text-paper/75">
+          <p v-reveal="200" class="mt-7 max-w-xl text-lg leading-8 text-paper/75">
             {{ settings.tagline ?? 'Join online, carry a verifiable digital membership card, and follow the Hijri calendar — all in one place.' }}
-          </p> -->
+          </p>
           <div v-reveal="260" class="mt-10 flex flex-wrap gap-3">
             <RouterLink to="/membership" class="btn-accent px-7 py-3.5 text-base">Apply for membership</RouterLink>
             <RouterLink :to="user ? '/account' : '/login'" class="btn-ghost-light px-7 py-3.5 text-base">
