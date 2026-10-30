@@ -5,7 +5,6 @@
  */
 import { computed, ref, useId } from 'vue'
 import type { CardBranding, CardData } from '@/lib/card/types'
-import { disciplineName } from '@/lib/disciplines'
 import { guillochePaths } from '@/lib/card/guilloche'
 
 const props = defineProps<{ data: CardData; branding: CardBranding }>()
@@ -59,7 +58,9 @@ const uid = useId()
       <div class="brand">
         <span class="logo"><img v-if="branding.logoUrl" :src="branding.logoUrl" alt="" /></span>
         <div>
-          <div class="short">{{ branding.shortName }}</div>
+          <div class="short">
+            {{ branding.shortName }}<span v-if="branding.registrationNumber" class="rc">RC: {{ branding.registrationNumber }}</span>
+          </div>
           <div class="full">{{ branding.fullName }}</div>
         </div>
       </div>
@@ -85,6 +86,7 @@ const uid = useId()
         <span class="dot" />
         {{ data.statusLabel }}
       </div>
+      <div v-if="data.level" class="level-under">{{ data.level }}</div>
     </div>
 
     <!-- Details -->
@@ -92,8 +94,13 @@ const uid = useId()
       <div class="label">Name</div>
       <div class="name" :style="{ fontSize: nameSize + 'px' }">{{ data.fullName }}</div>
 
+      <!-- Level replaces the membership number on the front; the number is printed on the back. -->
       <div class="row">
-        <div>
+        <div v-if="data.level">
+          <div class="label">Level</div>
+          <div class="number level">{{ data.level }}</div>
+        </div>
+        <div v-else>
           <div class="label">Membership no.</div>
           <div class="number">{{ data.membershipNumber }}</div>
         </div>
@@ -109,10 +116,6 @@ const uid = useId()
           <div class="label">Valid until</div>
           <div class="date accent">{{ data.expiryDate }}</div>
         </div>
-      </div>
-
-      <div class="chips">
-        <span v-for="d in data.disciplines" :key="d" class="chip">{{ disciplineName(d) }}</span>
       </div>
     </section>
 
@@ -191,6 +194,15 @@ const uid = useId()
   line-height: 0.9;
   letter-spacing: 0.05em;
   color: var(--y);
+}
+.rc {
+  margin-left: 12px;
+  font-family: 'Inter Variable', sans-serif;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
 }
 .full {
   margin-top: 5px;
@@ -328,6 +340,24 @@ const uid = useId()
   font-weight: 600;
   letter-spacing: 0.03em;
 }
+.number.level {
+  min-width: 300px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.level-under {
+  margin-top: 10px;
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+}
 .dates {
   margin-top: 16px;
   display: grid;
@@ -351,21 +381,6 @@ const uid = useId()
 }
 .date.accent {
   color: var(--y);
-}
-.chips {
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.chip {
-  border: 1.5px solid rgba(255, 255, 255, 0.75);
-  border-radius: 999px;
-  padding: 4px 14px;
-  font-size: 13.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 /* Footer */

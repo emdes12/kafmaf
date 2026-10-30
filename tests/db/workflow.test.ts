@@ -190,6 +190,22 @@ describe('approval & issuance', () => {
     await expect(db.q(alice, `select public.renew_membership(id) from public.members`)).rejects.toThrow(/Administrator access required/)
   })
 
+  it('only administrators set the level printed on the card', async () => {
+    const [m] = await db.su<{ id: string }>(`select id from public.members where user_id = $1`, [alice.id])
+    const update = (u: User, level: string | null) =>
+      db.q<{ membership_level: string | null }>(
+        u,
+        `select membership_level from public.admin_update_member($1, 'Alice Example', 'Alice', array['karate'], $2)`,
+        [m.id, level],
+      )
+    await expect(update(alice, 'Master')).rejects.toThrow(/Administrator access required/)
+    expect((await update(admin, '  Student  '))[0].membership_level).toBe('Student')
+    expect((await update(admin, null))[0].membership_level).toBe('Student')
+    expect((await update(admin, ''))[0].membership_level).toBeNull()
+    const [own] = await db.q<{ membership_level: string | null }>(alice, `select membership_level from public.members_with_status`)
+    expect(own.membership_level).toBeNull()
+  })
+
   it('rejection records a reason', async () => {
     const [b] = await db.su<{ id: string }>(`select id from public.membership_applications where user_id = $1`, [bob.id])
     await expect(db.q(admin, `select public.reject_application($1, '')`, [b.id])).rejects.toThrow(/reason/)

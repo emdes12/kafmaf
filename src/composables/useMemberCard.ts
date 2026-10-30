@@ -48,6 +48,7 @@ export function useMemberCard(member: Ref<Member | null>) {
       fullName: m.full_name,
       membershipNumber: m.membership_number,
       disciplines: m.disciplines,
+      level: m.membership_level,
       issueDate: formatCardDate(m.issue_date),
       expiryDate: formatCardDate(m.expiry_date),
       statusLabel: 'Active',

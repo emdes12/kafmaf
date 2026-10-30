@@ -21,7 +21,7 @@ const error = ref<string | null>(null)
 const notice = ref<string | null>(null)
 const busy = ref(false)
 
-const edit = ref({ full_name: '', display_name: '', disciplines: [] as string[] })
+const edit = ref({ full_name: '', display_name: '', level: '', disciplines: [] as string[] })
 const statusReason = ref('')
 const rotateToken = ref(false)
 
@@ -41,7 +41,12 @@ async function load() {
   }
   member.value = data as Member
   history.value = (logs.data ?? []) as AuditLog[]
-  edit.value = { full_name: member.value.full_name, display_name: member.value.display_name, disciplines: [...member.value.disciplines] }
+  edit.value = {
+    full_name: member.value.full_name,
+    display_name: member.value.display_name,
+    level: member.value.membership_level ?? '',
+    disciplines: [...member.value.disciplines],
+  }
 }
 onMounted(load)
 
@@ -67,6 +72,7 @@ const saveDetails = () =>
       p_full_name: edit.value.full_name,
       p_display_name: edit.value.display_name,
       p_disciplines: edit.value.disciplines,
+      p_level: edit.value.level,
     }),
   )
 
@@ -140,6 +146,11 @@ async function replacePhoto(e: Event) {
           <div>
             <label for="dn" class="field-label">Display name (verification page)</label>
             <input id="dn" v-model="edit.display_name" class="input" maxlength="120" />
+          </div>
+          <div>
+            <label for="lv" class="field-label">Level (printed on card)</label>
+            <input id="lv" v-model="edit.level" class="input" maxlength="40" placeholder="e.g. Student" />
+            <p class="field-hint">Leave empty to print the membership number instead.</p>
           </div>
           <fieldset>
             <legend class="field-label">Disciplines</legend>

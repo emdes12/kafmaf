@@ -36,6 +36,8 @@ export const DEFAULT_SETTINGS: OrganizationSettings = {
   card_color_primary: '#16181d',
   card_color_accent: '#9e1b22',
   card_color_gold: '#b08d4a',
+  registration_number: null,
+  card_found_notice: null,
   logo_path: null,
   hero_image_path: null,
   hero_image_alt: null,

@@ -39,7 +39,9 @@ const uid = useId()
     <header class="head">
       <span class="logo"><img v-if="branding.logoUrl" :src="branding.logoUrl" alt="" /></span>
       <div>
-        <div class="short">{{ branding.shortName }}</div>
+        <div class="short">
+          {{ branding.shortName }}<span v-if="branding.registrationNumber" class="rc">RC: {{ branding.registrationNumber }}</span>
+        </div>
         <div class="full">{{ branding.fullName }}</div>
       </div>
     </header>
@@ -64,8 +66,11 @@ const uid = useId()
         <strong>{{ branding.verifyHost || 'the official website' }}</strong>. It shows the current membership status from the
         live records.
       </p>
-      <p class="statement">{{ branding.validityStatement }}</p>
-      <p v-if="branding.contactLine" class="contact"><span class="label">Contact</span>{{ branding.contactLine }}</p>
+      <p class="statement">
+        {{ branding.validityStatement }}
+        <strong v-if="branding.foundNotice" class="found">{{ branding.foundNotice }}</strong>
+      </p>
+      <p v-if="branding.contactLine && !branding.foundNotice" class="contact"><span class="label">Contact</span>{{ branding.contactLine }}</p>
       <div v-if="branding.showSignature" class="signature">
         <div class="sig-line" />
         <div class="label">{{ branding.signatureLabel || 'Authorised signature' }}</div>
@@ -136,6 +141,15 @@ const uid = useId()
   line-height: 0.9;
   letter-spacing: 0.05em;
   color: var(--y);
+}
+.rc {
+  margin-left: 12px;
+  font-family: 'Inter Variable', sans-serif;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
 }
 .full {
   margin-top: 5px;
@@ -276,6 +290,12 @@ const uid = useId()
   font-size: 15.5px;
   line-height: 1.4;
   font-weight: 600;
+}
+.found {
+  display: block;
+  margin-top: 4px;
+  font-weight: 800;
+  color: #0d2311;
 }
 .contact {
   margin-top: 12px;

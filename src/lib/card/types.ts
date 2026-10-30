@@ -5,6 +5,8 @@ export interface CardData {
   fullName: string
   membershipNumber: string
   disciplines: string[]
+  /** Member level printed on the card front (e.g. "Student"); null when not set. */
+  level: string | null
   issueDate: string // DD/MM/YYYY
   expiryDate: string // DD/MM/YYYY
   /** Status label printed on the card ('Active' for live cards, 'Sample' for the design preview). */
@@ -33,6 +35,10 @@ export interface CardBranding {
   showSignature: boolean
   signatureLabel: string | null
   contactLine: string | null
+  /** Organisation registration number, printed as "RC: …" beside the short name. */
+  registrationNumber: string | null
+  /** Lost-card notice on the back, e.g. "If found, kindly call …". */
+  foundNotice: string | null
   verifyHost: string
 }
 
@@ -67,6 +73,8 @@ export function brandingFromSettings(
     showSignature: s.card_show_signature,
     signatureLabel: s.card_signature_label,
     contactLine: contact || null,
+    registrationNumber: s.registration_number,
+    foundNotice: s.card_found_notice,
     verifyHost,
   }
 }
@@ -75,6 +83,7 @@ export const SAMPLE_CARD: CardData = {
   fullName: 'SAMPLE MEMBER',
   membershipNumber: 'KAFMAF-DEMO-0001',
   disciplines: ['karate', 'boxing', 'taekwondo'],
+  level: 'Student',
   issueDate: 'DD/MM/YYYY',
   expiryDate: 'DD/MM/YYYY',
   statusLabel: 'Sample',

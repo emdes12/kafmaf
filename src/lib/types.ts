@@ -35,6 +35,8 @@ export interface OrganizationSettings {
   card_color_primary: string
   card_color_accent: string
   card_color_gold: string
+  registration_number: string | null
+  card_found_notice: string | null
   logo_path: string | null
   hero_image_path: string | null
   hero_image_alt: string | null
@@ -80,6 +82,7 @@ export interface Member {
   display_name: string
   photo_path: string | null
   disciplines: Discipline[]
+  membership_level: string | null
   status: MembershipStatus
   status_reason: string | null
   member_since: IsoDate

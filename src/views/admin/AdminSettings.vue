@@ -28,7 +28,7 @@ const EDITABLE: (keyof OrganizationSettings)[] = [
   'contact_phone', 'contact_email', 'contact_address', 'contact_notes', 'applications_open', 'eligibility_text',
   'membership_terms_text', 'faith_attestation_enabled', 'faith_attestation_text', 'validity_months', 'validity_approved',
   'privacy_notice_version', 'card_theme', 'card_validity_statement', 'card_show_signature', 'card_signature_label', 'card_color_primary',
-  'card_color_accent', 'card_color_gold', 'logo_path', 'hero_image_path', 'hero_image_alt', 'hijri_calendar',
+  'card_color_accent', 'card_color_gold', 'registration_number', 'card_found_notice', 'logo_path', 'hero_image_path', 'hero_image_alt', 'hijri_calendar',
   'hijri_adjustment_days', 'hijri_authority_label',
 ]
 
@@ -216,6 +216,18 @@ const calendars = Object.keys(CALENDAR_LABELS) as HijriCalendarId[]
           <div><label for="c1" class="field-label">Primary (charcoal)</label><input id="c1" v-model="form.card_color_primary" type="color" class="h-10 w-full rounded border border-line" /></div>
           <div><label for="c2" class="field-label">Accent (red)</label><input id="c2" v-model="form.card_color_accent" type="color" class="h-10 w-full rounded border border-line" /></div>
           <div><label for="c3" class="field-label">Detail (gold)</label><input id="c3" v-model="form.card_color_gold" type="color" class="h-10 w-full rounded border border-line" /></div>
+        </div>
+        <div class="grid gap-4 md:grid-cols-[220px_1fr]">
+          <div>
+            <label for="rc" class="field-label">Registration number (RC)</label>
+            <input id="rc" v-model="form.registration_number" class="input" maxlength="40" placeholder="e.g. 106730" />
+            <p class="field-hint">Printed as “RC: …” beside the name.</p>
+          </div>
+          <div>
+            <label for="fnn" class="field-label">Lost-card notice (card back)</label>
+            <input id="fnn" v-model="form.card_found_notice" class="input" maxlength="160" />
+            <p class="field-hint">For example “If found, kindly call …”. Leave empty to hide.</p>
+          </div>
         </div>
         <div><label for="vs" class="field-label">Validity statement (card back)</label><textarea id="vs" v-model="form.card_validity_statement" rows="2" class="input" maxlength="220" /></div>
         <div class="flex flex-wrap items-end gap-4">
